@@ -120,9 +120,11 @@ export const useTodos = (filter: FilterType) => {
           });
 
           setTodos(prev => prev.map(t => (t.id === todoId ? updatedTodo : t)));
+          return true;
         }
       } catch (error) {
         setErrorMessage('Unable to update a todo');
+        return false;
       } finally {
         setLoadingTodos(prev => prev.filter(id => id !== todoId));
       }
@@ -168,7 +170,9 @@ export const useTodos = (filter: FilterType) => {
 
   const handleToggleAll = useCallback(async () => {
     const allCompleted = todos.every(todo => todo.completed);
-    const todosToUpdate = todos.filter(todo => todo.completed !== !allCompleted);
+    const todosToUpdate = todos.filter(
+      todo => todo.completed !== !allCompleted,
+    );
 
     setLoadingTodos(todosToUpdate.map(todo => todo.id));
 

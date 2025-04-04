@@ -20,12 +20,16 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
 
   const handleTitleChange = async (newTitle: string) => {
     if (newTitle.trim()) {
-      await handleUpdate(todo.id, newTitle);
+      const result = await handleUpdate(todo.id, newTitle);
+      if (result) {
+        setIsEditing(false);
+      }
     } else {
-      await handleDelete(todo.id);
+      const result = await handleDelete(todo.id);
+      if (result) {
+        setIsEditing(false);
+      }
     }
-
-    setIsEditing(false);
   };
 
   const handleCancel = () => {

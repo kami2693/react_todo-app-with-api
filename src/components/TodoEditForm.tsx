@@ -20,7 +20,14 @@ export const TodoEditForm: React.FC<Props> = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onTitleChange(editedTitle.trim());
+    const trimmedTitle = editedTitle.trim();
+
+    if (trimmedTitle === title) {
+      onCancel();
+      return;
+    }
+
+    onTitleChange(trimmedTitle);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -28,6 +35,17 @@ export const TodoEditForm: React.FC<Props> = ({
       onCancel();
       setEditedTitle(title);
     }
+  };
+
+  const handleBlur = () => {
+    const trimmedTitle = editedTitle.trim();
+
+    if (trimmedTitle === title) {
+      onCancel();
+      return;
+    }
+
+    onTitleChange(trimmedTitle);
   };
 
   return (
@@ -39,7 +57,7 @@ export const TodoEditForm: React.FC<Props> = ({
         placeholder="Empty todo will be deleted"
         value={editedTitle}
         onChange={e => setEditedTitle(e.target.value)}
-        onBlur={() => onTitleChange(editedTitle.trim())}
+        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         ref={inputRef}
       />
